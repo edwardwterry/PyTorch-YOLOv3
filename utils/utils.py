@@ -42,6 +42,9 @@ def rescale_boxes(boxes, current_dim, original_shape):
     # Image height and width after padding is removed
     unpad_h = current_dim - pad_y
     unpad_w = current_dim - pad_x
+    print('original_shape', original_shape)
+    print('current_dim', current_dim)
+    print('pad x y', pad_x, pad_y)
     # Rescale bounding boxes to dimension of original image
     boxes[:, 0] = ((boxes[:, 0] - pad_x // 2) / unpad_w) * orig_w
     boxes[:, 1] = ((boxes[:, 1] - pad_y // 2) / unpad_h) * orig_h
@@ -266,7 +269,7 @@ def non_max_suppression(prediction, conf_thres=0.5, nms_thres=0.4):
 
 def build_targets(pred_boxes, pred_cls, target, anchors, ignore_thres):
 
-    ByteTensor = torch.cuda.ByteTensor if pred_boxes.is_cuda else torch.ByteTensor
+    BoolTensor = torch.cuda.BoolTensor if pred_boxes.is_cuda else torch.BoolTensor
     FloatTensor = torch.cuda.FloatTensor if pred_boxes.is_cuda else torch.FloatTensor
 
     nB = pred_boxes.size(0)
@@ -275,8 +278,8 @@ def build_targets(pred_boxes, pred_cls, target, anchors, ignore_thres):
     nG = pred_boxes.size(2)
 
     # Output tensors
-    obj_mask = ByteTensor(nB, nA, nG, nG).fill_(0)
-    noobj_mask = ByteTensor(nB, nA, nG, nG).fill_(1)
+    obj_mask = BoolTensor(nB, nA, nG, nG).fill_(0)
+    noobj_mask = BoolTensor(nB, nA, nG, nG).fill_(1)
     class_mask = FloatTensor(nB, nA, nG, nG).fill_(0)
     iou_scores = FloatTensor(nB, nA, nG, nG).fill_(0)
     tx = FloatTensor(nB, nA, nG, nG).fill_(0)

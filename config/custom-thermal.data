@@ -1,0 +1,4 @@
+classes=1
+train=data/thermal/train.txt
+valid=data/thermal/test.txt
+names=data/thermal/classes.names

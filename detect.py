@@ -23,11 +23,11 @@ from matplotlib.ticker import NullLocator
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--image_folder", type=str, default="data/samples", help="path to dataset")
-    parser.add_argument("--model_def", type=str, default="config/yolov3.cfg", help="path to model definition file")
-    parser.add_argument("--weights_path", type=str, default="weights/yolov3.weights", help="path to weights file")
-    parser.add_argument("--class_path", type=str, default="data/coco.names", help="path to class label file")
-    parser.add_argument("--conf_thres", type=float, default=0.8, help="object confidence threshold")
+    parser.add_argument("--image_folder", type=str, default="data/custom/color/images/test", help="path to dataset")
+    parser.add_argument("--model_def", type=str, default="config/yolov3-tiny.cfg", help="path to model definition file")
+    parser.add_argument("--weights_path", type=str, default="weights/yolov3_ckpt_35.pth", help="path to weights file")
+    parser.add_argument("--class_path", type=str, default="data/custom/color/classes.names", help="path to class label file")
+    parser.add_argument("--conf_thres", type=float, default=0.6, help="object confidence threshold")
     parser.add_argument("--nms_thres", type=float, default=0.4, help="iou thresshold for non-maximum suppression")
     parser.add_argument("--batch_size", type=int, default=1, help="size of the batches")
     parser.add_argument("--n_cpu", type=int, default=0, help="number of cpu threads to use during batch generation")
@@ -51,7 +51,7 @@ if __name__ == "__main__":
         model.load_state_dict(torch.load(opt.weights_path))
 
     model.eval()  # Set in evaluation mode
-
+    print(model)
     dataloader = DataLoader(
         ImageFolder(opt.image_folder, img_size=opt.img_size),
         batch_size=opt.batch_size,
@@ -106,6 +106,7 @@ if __name__ == "__main__":
         # Draw bounding boxes and labels of detections
         if detections is not None:
             # Rescale boxes to original image
+            print(detections, type(detections))
             detections = rescale_boxes(detections, opt.img_size, img.shape[:2])
             unique_labels = detections[:, -1].cpu().unique()
             n_cls_preds = len(unique_labels)

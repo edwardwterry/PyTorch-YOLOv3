@@ -1,9 +1,9 @@
 numpy
-torch>=1.0
+torch
 torchvision
 matplotlib
-tensorflow
-tensorboard
+#tensorflow
+tensorboard-pytorch
 terminaltables
 pillow
 tqdm

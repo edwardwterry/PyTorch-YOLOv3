@@ -1,0 +1,4 @@
+classes=1
+train=data/color/train.txt
+valid=data/color/valid.txt
+names=data/color/classes.names
