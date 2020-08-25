@@ -24,6 +24,8 @@ import torch.optim as optim
 
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
+warnings.simplefilter("ignore", DeprecationWarning)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -150,7 +152,7 @@ if __name__ == "__main__":
 
             model.seen += imgs.size(0)
 
-        if epoch % opt.evaluation_interval == 1:
+        if epoch % opt.evaluation_interval == 5:
             print("\n---- Evaluating Model ----")
             # Evaluate the model on the validation set
             precision, recall, AP, f1, ap_class = evaluate(
